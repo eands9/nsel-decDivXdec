@@ -59,23 +59,18 @@ class ViewController: UIViewController {
     }
     
     func askQuestion(){
-        randomNumA = Int.random(in: 100 ..< 1000)
-        randomNumB = Int.random(in: 1 ..< 50)
-        randomNumC = Int.random(in: 1000 ..< 2000)
-        randomNumD = Int.random(in: 1 ..< 50)
-        randomNumE = Int.random(in: 100 ..< 1000)
-        firstNum = randomNumA/100 * 100 + randomNumB
-        secondNum = randomNumC/100 * 100 + randomNumD
-        thirdNum = randomNumE/100 * 100 + randomNumB + randomNumD - 2
+        randomNumA = Int.random(in: 10000 ..< 100000)
+        randomNumB = Int.random(in: 100 ..< 1000)
+        firstNum = randomNumA/1000 * 1000 + 13
+        secondNum = randomNumB
         numA = Double(firstNum)
         numB = Double(secondNum)
-        numC = Double(thirdNum)
-        questionLabel.text = "\(firstNum) + \(secondNum) - \(thirdNum)"
-        answerCorrect = numA + numB - numC
+        questionLabel.text = "\(firstNum) / \(secondNum)"
+        answerCorrect = numA / numB
     }
     
     @IBAction func showBtn(_ sender: Any) {
-        answerTxt.text = String(answerCorrect)
+        answerTxt.text = String(round(answerCorrect))
         isShow = true
     }
     
