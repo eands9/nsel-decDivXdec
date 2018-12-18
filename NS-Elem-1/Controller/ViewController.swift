@@ -25,9 +25,19 @@ class ViewController: UIViewController {
     
     var convertRoman = ""
     var randomNumA : Int = 0
+    var randomNumB : Int = 0
+    var randomNumC : Int = 0
+    var randomNumD : Int = 0
+    var randomNumE : Int = 0
+    var firstNum: Int = 0
+    var secondNum: Int = 0
+    var thirdNum: Int = 0
+    var numA: Double = 0
+    var numB: Double = 0
+    var numC: Double = 0
     var questionTxt : String = ""
-    var answerCorrect : Int = 0
-    var answerUser : Int = 0
+    var answerCorrect : Double = 0
+    var answerUser : Double = 0
     var isShow: Bool = false
     
     let congratulateArray = ["Great Job", "Excellent", "Way to go", "Alright", "Right on", "Correct", "Well done", "Awesome","Give me a high five"]
@@ -49,20 +59,30 @@ class ViewController: UIViewController {
     }
     
     func askQuestion(){
-        randomNumA = Int.random(in: 10 ... 1000)
-        questionLabel.text = toRoman(number: randomNumA)
-        answerCorrect = randomNumA
+        randomNumA = Int.random(in: 100 ..< 1000)
+        randomNumB = Int.random(in: 1 ..< 50)
+        randomNumC = Int.random(in: 1000 ..< 2000)
+        randomNumD = Int.random(in: 1 ..< 50)
+        randomNumE = Int.random(in: 100 ..< 1000)
+        firstNum = randomNumA/100 * 100 + randomNumB
+        secondNum = randomNumC/100 * 100 + randomNumD
+        thirdNum = randomNumE/100 * 100 + randomNumB + randomNumD - 2
+        numA = Double(firstNum)
+        numB = Double(secondNum)
+        numC = Double(thirdNum)
+        questionLabel.text = "\(firstNum) + \(secondNum) - \(thirdNum)"
+        answerCorrect = numA + numB - numC
     }
     
     @IBAction func showBtn(_ sender: Any) {
-        answerTxt.text = String(randomNumA)
+        answerTxt.text = String(answerCorrect)
         isShow = true
     }
     
     func checkAnswer(){
-        answerUser = (answerTxt.text! as NSString).integerValue
+        answerUser = (answerTxt.text! as NSString).doubleValue
         
-        if answerUser == answerCorrect && isShow == false {
+        if answerUser >= answerCorrect * 0.95 && answerUser <= answerCorrect * 1.05 && isShow == false {
             correctAnswers += 1
             numberAttempts += 1
             updateProgress()
