@@ -23,28 +23,14 @@ class ViewController: UIViewController {
     var timer = Timer()
     var counter = 0.0
     
+    var convertRoman = ""
     var randomNumA : Int = 0
-    var randomNumB : Int = 0
-    var randomNumC : Int = 0
-    var randomNumD : Int = 0
-    var firstNum : Double = 0
-    var secondNum : Double = 0
-    var thirdNum : Double = 0
-    var fourthNum : Double = 0
     var questionTxt : String = ""
-    var answerCorrect : Double = 0
-    var answerUser : Double = 0
-    
-    var randomHigh: Int = 0
-    var randomLow: Int = 0
-    var randomHighIndex: Int = 0
-    var randomLowIndex: Int = 0
+    var answerCorrect : Int = 0
+    var answerUser : Int = 0
     
     let congratulateArray = ["Great Job", "Excellent", "Way to go", "Alright", "Right on", "Correct", "Well done", "Awesome","Give me a high five"]
     let retryArray = ["Try again","Oooops"]
-    
-    let bigNumberArray = [8,9]
-    let smallNumberArray = [1,2]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,26 +48,15 @@ class ViewController: UIViewController {
     }
     
     func askQuestion(){
-        pickHighNum()
-        pickLowNum()
-        //2 digit questions starting at 100
-        randomNumA = Int.random(in: 10 ..< 51)
-        randomNumD = Int.random(in: 1 ..< 10)
-        randomNumB = randomNumA * 10 + randomHigh
-        randomNumC = randomNumD * 10 + randomLow
-
-        
-        firstNum = Double(randomNumB)
-        secondNum = Double(randomNumC)
-        
-        questionLabel.text = "\(randomNumB) X \(randomNumC)"
+        randomNumA = Int.random(in: 10 ... 1000)
+        questionLabel.text = toRoman(number: randomNumA)
+        answerCorrect = randomNumA
     }
     
     func checkAnswer(){
-        answerUser = (answerTxt.text! as NSString).doubleValue
-        answerCorrect = firstNum * secondNum
+        answerUser = (answerTxt.text! as NSString).integerValue
         
-        if answerUser >= answerCorrect * 0.95 && answerUser <= answerCorrect * 1.05 {
+        if answerUser == answerCorrect {
             correctAnswers += 1
             numberAttempts += 1
             updateProgress()
@@ -125,14 +100,26 @@ class ViewController: UIViewController {
         readMe(myText: retryArray[randomPick])
     }
     
-    func pickHighNum(){
-        randomHighIndex = Int(arc4random_uniform(2))
-        randomHigh = bigNumberArray[randomHighIndex]
-    }
-    
-    func pickLowNum(){
-        randomLowIndex = Int(arc4random_uniform(2))
-        randomLow = smallNumberArray[randomHighIndex]
+    func toRoman(number: Int) -> String {
+        let romanValues = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
+        let arabicValues = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
+
+        var startingValue = number
+        var romanValue = ""
+        for (index, romanChar) in romanValues.enumerated() {
+            var arabicValue = arabicValues[index]
+            var div = startingValue / arabicValue
+            if (div > 0)
+            {
+                for j in 0..<div
+                {
+                    //println("Should add \(romanChar) to string")
+                    romanValue += romanChar
+                }
+                startingValue -= arabicValue * div
+            }
+        }
+        return romanValue
     }
 }
 
