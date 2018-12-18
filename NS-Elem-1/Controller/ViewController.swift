@@ -28,6 +28,7 @@ class ViewController: UIViewController {
     var questionTxt : String = ""
     var answerCorrect : Int = 0
     var answerUser : Int = 0
+    var isShow: Bool = false
     
     let congratulateArray = ["Great Job", "Excellent", "Way to go", "Alright", "Right on", "Correct", "Well done", "Awesome","Give me a high five"]
     let retryArray = ["Try again","Oooops"]
@@ -53,16 +54,29 @@ class ViewController: UIViewController {
         answerCorrect = randomNumA
     }
     
+    @IBAction func showBtn(_ sender: Any) {
+        answerTxt.text = String(randomNumA)
+        isShow = true
+    }
+    
     func checkAnswer(){
         answerUser = (answerTxt.text! as NSString).integerValue
         
-        if answerUser == answerCorrect {
+        if answerUser == answerCorrect && isShow == false {
             correctAnswers += 1
             numberAttempts += 1
             updateProgress()
             randomPositiveFeedback()
             askQuestion()
             answerTxt.text = ""
+        }
+        else if isShow == true {
+            readMe(myText: "Next Question")
+            askQuestion()
+            isShow = false
+            answerTxt.text = ""
+            numberAttempts += 1
+            updateProgress()
         }
         else{
             randomTryAgain()
