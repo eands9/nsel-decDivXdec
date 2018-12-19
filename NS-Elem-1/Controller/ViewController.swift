@@ -22,19 +22,11 @@ class ViewController: UIViewController {
     var numberAttempts: Int = 0
     var timer = Timer()
     var counter = 0.0
-    
-    var convertRoman = ""
-    var randomNumA : Int = 0
-    var randomNumB : Int = 0
-    var randomNumC : Int = 0
-    var randomNumD : Int = 0
-    var randomNumE : Int = 0
-    var firstNum: Int = 0
-    var secondNum: Int = 0
-    var thirdNum: Int = 0
-    var numA: Double = 0
-    var numB: Double = 0
-    var numC: Double = 0
+
+    var randomNumA : Double = 0.00
+    var randomNumB : Double = 0.00
+    var numA: Double = 0.00
+    var numB: Double = 0.00
     var questionTxt : String = ""
     var answerCorrect : Double = 0
     var answerUser : Double = 0
@@ -59,25 +51,23 @@ class ViewController: UIViewController {
     }
     
     func askQuestion(){
-        randomNumA = Int.random(in: 100 ..< 1000)
-        randomNumB = Int.random(in: 100 ..< 1000)
-        firstNum = randomNumA
-        secondNum = randomNumB/100 * 100 + 3
-        numA = Double(firstNum)
-        numB = Double(secondNum)
-        questionLabel.text = "\(firstNum) X \(secondNum)"
-        answerCorrect = numA * numB
+        randomNumA = Double.random(in: 5 ... 10)
+        randomNumB = Double.random(in: 0.25 ... 4.75)
+        numA = round(randomNumA*10)/10
+        numB = round(randomNumB*100)/100
+        questionLabel.text = "\(numA) - \(numB)"
+        answerCorrect = round((numA - numB)*100)/100
     }
     
     @IBAction func showBtn(_ sender: Any) {
-        answerTxt.text = String(round(answerCorrect))
+        answerTxt.text = String(answerCorrect)
         isShow = true
     }
     
     func checkAnswer(){
         answerUser = (answerTxt.text! as NSString).doubleValue
         
-        if answerUser >= answerCorrect * 0.95 && answerUser <= answerCorrect * 1.05 && isShow == false {
+        if answerUser == answerCorrect && isShow == false {
             correctAnswers += 1
             numberAttempts += 1
             updateProgress()
@@ -127,28 +117,6 @@ class ViewController: UIViewController {
     func randomTryAgain(){
         randomPick = Int(arc4random_uniform(2))
         readMe(myText: retryArray[randomPick])
-    }
-    
-    func toRoman(number: Int) -> String {
-        let romanValues = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
-        let arabicValues = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
-
-        var startingValue = number
-        var romanValue = ""
-        for (index, romanChar) in romanValues.enumerated() {
-            var arabicValue = arabicValues[index]
-            var div = startingValue / arabicValue
-            if (div > 0)
-            {
-                for j in 0..<div
-                {
-                    //println("Should add \(romanChar) to string")
-                    romanValue += romanChar
-                }
-                startingValue -= arabicValue * div
-            }
-        }
-        return romanValue
     }
 }
 
