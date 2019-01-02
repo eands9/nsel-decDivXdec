@@ -23,10 +23,11 @@ class ViewController: UIViewController {
     var timer = Timer()
     var counter = 0.0
 
-    var randomNumA : Double = 0.00
-    var randomNumB : Double = 0.00
-    var numA: Double = 0.00
-    var numB: Double = 0.00
+    var randomNumA = 0
+    var randomNumB = 0
+    var numA = 0.00
+    var numB = 0.00
+    var numC = 0.00
     var questionTxt : String = ""
     var answerCorrect : Double = 0
     var answerUser : Double = 0
@@ -51,12 +52,27 @@ class ViewController: UIViewController {
     }
     
     func askQuestion(){
-        randomNumA = Double.random(in: 5 ... 10)
-        randomNumB = Double.random(in: 0.25 ... 4.75)
-        numA = round(randomNumA*10)/10
-        numB = round(randomNumB*100)/100
-        questionLabel.text = "\(numA) - \(numB)"
-        answerCorrect = round((numA - numB)*100)/100
+        let randomIndex = Int.random(in: 0...1)
+        randomNumA = Int.random(in: 11...199)
+        randomNumB = Int.random(in: 2...9)
+        numA = ((Double(randomNumA) / 100.00) * 1000).rounded() / 1000
+        numB = Double(randomNumB) / 10.00
+        numC = ((numA * numB) * 1000).rounded() / 1000
+        
+        switch randomIndex{
+        case 0:
+            questionLabel.text = "\(numA) X \(numB)"
+            answerCorrect = numC
+        case 1:
+            questionLabel.text = "\(numC) ÷ \(numB)"
+            answerCorrect = numA
+        default:
+            questionLabel.text = "999"
+            answerCorrect = 999
+        }
+        print("numA is \(numA)")
+        print("numB is \(numB)")
+        print("numC is \(numC)")
     }
     
     @IBAction func showBtn(_ sender: Any) {
